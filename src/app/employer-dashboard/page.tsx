@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/button";
-import { logoutUserAction } from "@/features/auth/server/auth.actions";
 import { getCurrentUser } from "@/features/auth/server/auth.queries";
 import EmployerCards from "@/features/employer/components/employer-cards";
 import ProfileCompletion from "@/features/employer/components/profile-completion";

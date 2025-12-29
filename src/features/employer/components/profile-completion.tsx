@@ -15,6 +15,7 @@ const ProfileCompletion = async () => {
   const currentUserStatus = await getCurrentEmployerDetails();
 
   if (currentUserStatus?.status) return null;
+
   return (
     <div className="flex flex-col gap-6">
       <Item variant="destructive">

@@ -23,59 +23,39 @@ import {
 } from "@/components/ui/select";
 import { updateEmployerProfileAction } from "../server/employer.action";
 import { toast } from "sonner";
+import {
+  EmployerProfileData,
+  employerProfileSchema,
+  organizationTypes,
+  teamSizes,
+} from "../employer.schema";
+import { zodResolver } from "@hookform/resolvers/zod";
 
-export const organizationTypes = [
-  "development",
-  "business",
-  "finance & accounting",
-  "it & software",
-  "office productivity",
-  "personal development",
-  "design",
-  "marketing",
-  "photography & video",
-  "healthcare",
-  "education",
-  "retail",
-  "manufacturing",
-  "hospitality",
-  "consulting",
-  "real estate",
-  "legal",
-  "other",
-] as const;
-
-export const teamSizes = [
-  "1",
-  "2-10",
-  "11-50",
-  "51-200",
-  "201-500",
-  "501-1000",
-  "1001+",
-] as const;
-
-type OrganizationType = (typeof organizationTypes)[number];
-type TeamSize = (typeof teamSizes)[number];
-interface FormType {
-  name: string;
-  description: string;
-  organizationType: OrganizationType;
-  teamSize: TeamSize;
-  yearOfEstablishment: string;
-  location: string;
-  websiteUrl: string;
+interface SettingFormProps {
+  initialData?: Partial<EmployerProfileData>;
 }
-const SettingForm = () => {
+
+const SettingForm = ({ initialData }: SettingFormProps) => {
   const {
     register,
     handleSubmit,
     control,
     formState: { errors },
     watch,
-  } = useForm<FormType>();
+  } = useForm<EmployerProfileData>({
+    resolver: zodResolver(employerProfileSchema),
+    defaultValues: {
+      name: initialData?.name || "",
+      description: initialData?.description || "",
+      organizationType: initialData?.organizationType || undefined,
+      teamSize: initialData?.teamSize || undefined,
+      location: initialData?.location || "",
+      websiteUrl: initialData?.websiteUrl || "",
+      yearOfEstablishment: initialData?.yearOfEstablishment,
+    },
+  });
 
-  const onSubmit = async (data: FormType) => {
+  const onSubmit = async (data: EmployerProfileData) => {
     const result = await updateEmployerProfileAction(data);
     if (result.status === "success") {
       toast.success(result.message);
@@ -110,7 +90,9 @@ const SettingForm = () => {
               <Textarea
                 id="description"
                 placeholder="Tell us about your company, what you do, and your mission..."
-                className="pl-10 resize-none"
+                className={`pl-10 ${
+                  errors.description ? "border-destructive" : ""
+                } `}
                 {...register("description")}
               />
             </div>
@@ -131,7 +113,11 @@ const SettingForm = () => {
                   <div className="relative">
                     <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground z-10" />
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="pl-10 w-full ">
+                      <SelectTrigger
+                        className={`pl-10 w-full ${
+                          errors.organizationType ? "border-destructive" : ""
+                        } `}
+                      >
                         <SelectValue placeholder="Select organization type" />
                       </SelectTrigger>
                       <SelectContent>
@@ -162,7 +148,11 @@ const SettingForm = () => {
                   <div className="relative">
                     <Briefcase className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground z-10" />
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <SelectTrigger className="pl-10 w-full ">
+                      <SelectTrigger
+                        className={`pl-10 w-full ${
+                          errors.teamSize ? "border-destructive" : ""
+                        } `}
+                      >
                         <SelectValue placeholder="Select Team Size" />
                       </SelectTrigger>
                       <SelectContent>
@@ -197,7 +187,9 @@ const SettingForm = () => {
                   type="text"
                   placeholder="e.g., 2020"
                   maxLength={4}
-                  className="pl-10"
+                  className={`pl-10 w-full ${
+                    errors.yearOfEstablishment ? "border-destructive" : ""
+                  } `}
                   {...register("yearOfEstablishment")}
                 />
               </div>
@@ -218,7 +210,9 @@ const SettingForm = () => {
                   id="location"
                   type="text"
                   placeholder="e.g., Pune, Bangalore"
-                  className="pl-10"
+                  className={`pl-10 w-full ${
+                    errors.location ? "border-destructive" : ""
+                  } `}
                   {...register("location")}
                 />
               </div>

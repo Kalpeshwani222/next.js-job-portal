@@ -4,52 +4,11 @@ import { db } from "@/config/db";
 import { employers } from "@/drizzle/schema";
 import { getCurrentUser } from "@/features/auth/server/auth.queries";
 import { eq } from "drizzle-orm";
+import { EmployerProfileData } from "../employer.schema";
 
-const organizationTypes = [
-  "development",
-  "business",
-  "finance & accounting",
-  "it & software",
-  "office productivity",
-  "personal development",
-  "design",
-  "marketing",
-  "photography & video",
-  "healthcare",
-  "education",
-  "retail",
-  "manufacturing",
-  "hospitality",
-  "consulting",
-  "real estate",
-  "legal",
-  "other",
-] as const;
-
-const teamSizes = [
-  "1",
-  "2-10",
-  "11-50",
-  "51-200",
-  "201-500",
-  "501-1000",
-  "1001+",
-] as const;
-
-type OrganizationType = (typeof organizationTypes)[number];
-type TeamSize = (typeof teamSizes)[number];
-
-interface DataType {
-  name: string;
-  description: string;
-  organizationType: OrganizationType;
-  teamSize: TeamSize;
-  yearOfEstablishment: string;
-  location: string;
-  websiteUrl: string;
-}
-
-export const updateEmployerProfileAction = async (data: DataType) => {
+export const updateEmployerProfileAction = async (
+  data: EmployerProfileData
+) => {
   try {
     const current_user = await getCurrentUser();
     if (!current_user || current_user.role !== "employer") {
