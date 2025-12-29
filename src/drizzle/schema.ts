@@ -74,7 +74,7 @@ export const employers = pgTable("employers", {
   bannerImageUrl: text("banner_image_url"),
   organizationType: varchar("organization_type", { length: 255 }),
   teamSize: varchar("team_size", { length: 50 }),
-  yearOfEstablishment: date("year_of_establishment"),
+  yearOfEstablishment: integer("year_of_establishment"),
   websiteUrl: varchar("website_url", { length: 255 }),
   location: varchar("location", { length: 255 }),
 

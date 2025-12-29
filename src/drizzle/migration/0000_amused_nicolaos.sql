@@ -26,7 +26,7 @@ CREATE TABLE "employers" (
 	"banner_image_url" text,
 	"organization_type" varchar(255),
 	"team_size" varchar(50),
-	"year_of_establishment" date,
+	"year_of_establishment" integer,
 	"website_url" varchar(255),
 	"location" varchar(255),
 	"deleted_at" timestamp with time zone,
@@ -62,3 +62,4 @@ CREATE TABLE "users" (
 ALTER TABLE "applicants" ADD CONSTRAINT "applicants_id_users_id_fk" FOREIGN KEY ("id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "employers" ADD CONSTRAINT "employers_id_users_id_fk" FOREIGN KEY ("id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+

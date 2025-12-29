@@ -21,6 +21,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { updateEmployerProfileAction } from "../server/employer.action";
+import { toast } from "sonner";
 
 export const organizationTypes = [
   "development",
@@ -53,11 +55,13 @@ export const teamSizes = [
   "1001+",
 ] as const;
 
+type OrganizationType = (typeof organizationTypes)[number];
+type TeamSize = (typeof teamSizes)[number];
 interface FormType {
   name: string;
   description: string;
-  organizationType: string;
-  teamSize: string;
+  organizationType: OrganizationType;
+  teamSize: TeamSize;
   yearOfEstablishment: string;
   location: string;
   websiteUrl: string;
@@ -71,8 +75,11 @@ const SettingForm = () => {
     watch,
   } = useForm<FormType>();
 
-  const onSubmit = (data: FormType) => {
-    console.log(data);
+  const onSubmit = async (data: FormType) => {
+    const result = await updateEmployerProfileAction(data);
+    if (result.status === "success") {
+      toast.success(result.message);
+    } else toast.error(result.message);
   };
 
   return (
