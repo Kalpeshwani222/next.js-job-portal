@@ -1,4 +1,6 @@
+"use client";
 import { logoutUserAction } from "@/features/auth/server/auth.actions";
+import { cn } from "@/lib/utils";
 import {
   Bookmark,
   Briefcase,
@@ -11,7 +13,7 @@ import {
   User,
 } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import { usePathname } from "next/navigation";
 
 const base = "/employer-dashboard";
 
@@ -27,6 +29,27 @@ const navigationItems = [
 ];
 
 const EmployerSidebar = () => {
+  const pathname = usePathname();
+  console.log(pathname);
+
+  const isActiveLink = ({
+    href,
+    pathname,
+    base = "/",
+  }: {
+    href: string;
+    pathname: string;
+    base?: string;
+  }) => {
+    const cleanhref = href.replace(/\/$/, "") || "/";
+
+    const pattern = new URLPattern({
+      pathname: cleanhref === base ? base : `${cleanhref}{/*}?`,
+    });
+
+    return pattern.test({ pathname });
+  };
+
   return (
     <div className="w-64 bg-card border-r border-border fixed bottom-0 top-0">
       <div className="p-6">
@@ -43,15 +66,14 @@ const EmployerSidebar = () => {
             <Link
               key={curNav.name}
               href={curNav.href || "#"}
-              className=" flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors"
-              //   className={cn(
-              //     "flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors",
-              //     isLinkActive({
-              //       href: curNav.href || "#",
-              //       pathname,
-              //       base: "/employer-dashboard",
-              //     }) && "text-primary bg-blue-300"
-              //   )}
+              className={cn(
+                "flex items-center gap-3 px-3 py-2 text-sm font-medium rounded-lg transition-colors",
+                isActiveLink({
+                  href: curNav.href || "#",
+                  pathname,
+                  base: "/employer-dashboard",
+                }) && "text-primary bg-blue-300"
+              )}
             >
               <Icon />
               {curNav.name}

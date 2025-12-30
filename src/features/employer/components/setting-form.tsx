@@ -11,6 +11,7 @@ import {
   Calendar,
   FileText,
   Globe,
+  Loader,
   MapPin,
 } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
@@ -40,8 +41,7 @@ const SettingForm = ({ initialData }: SettingFormProps) => {
     register,
     handleSubmit,
     control,
-    formState: { errors },
-    watch,
+    formState: { errors, isDirty, isSubmitting },
   } = useForm<EmployerProfileData>({
     resolver: zodResolver(employerProfileSchema),
     defaultValues: {
@@ -244,7 +244,10 @@ const SettingForm = ({ initialData }: SettingFormProps) => {
           </div>
 
           <div className="flex items-center justify-center gap-4 pt-4">
-            <Button type="submit">Save Changes</Button>
+            <Button type="submit" disabled={!isDirty}>
+              {isSubmitting && <Loader className="w-4 h-4 animate-spin" />}
+              {isSubmitting ? "Saving Changes..." : "Save Changes"}
+            </Button>
           </div>
         </form>
       </CardContent>
