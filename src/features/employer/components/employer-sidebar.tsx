@@ -41,12 +41,10 @@ const EmployerSidebar = () => {
     pathname: string;
     base?: string;
   }) => {
-    const cleanhref = href.replace(/\/$/, "") || "/";
-
+    const clineHref = href.replace(/\/$/, "") || "/";
     const pattern = new URLPattern({
-      pathname: cleanhref === base ? base : `${cleanhref}{/*}?`,
+      pathname: clineHref === base ? base : `${clineHref}{/*}?`,
     });
-
     return pattern.test({ pathname });
   };
 

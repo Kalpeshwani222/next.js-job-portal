@@ -31,6 +31,7 @@ import {
   teamSizes,
 } from "../employer.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import RichTextEditor from "@/components/text-editor";
 
 interface SettingFormProps {
   initialData?: Partial<EmployerProfileData>;
@@ -84,23 +85,26 @@ const SettingForm = ({ initialData }: SettingFormProps) => {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="description">Company Description *</Label>
-            <div className="relative">
-              <FileText className="absolute left-3 top-3 w-4 h-4 text-muted-foreground" />
-              <Textarea
-                id="description"
-                placeholder="Tell us about your company, what you do, and your mission..."
-                className={`pl-10 ${
-                  errors.description ? "border-destructive" : ""
-                } `}
-                {...register("description")}
-              />
-            </div>
-            {errors.description && (
-              <p className="text-sm text-destructive">
-                {errors.description.message}
-              </p>
-            )}
+            <Controller
+              name="description"
+              control={control}
+              render={({ field, fieldState }) => (
+                <div className="space-y-2">
+                  <Label htmlFor="description">Company Description *</Label>
+
+                  <RichTextEditor
+                    content={field.value}
+                    onChange={field.onChange}
+                  />
+
+                  {fieldState.error && (
+                    <p className="text-sm text-destructive">
+                      {fieldState.error.message}
+                    </p>
+                  )}
+                </div>
+              )}
+            />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -200,7 +204,6 @@ const SettingForm = ({ initialData }: SettingFormProps) => {
               )}
             </div>
 
-            {/* Year of Establishment and Location - Two columns */}
             <div className="space-y-2">
               <Label htmlFor="location">Location *</Label>
 
