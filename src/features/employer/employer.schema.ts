@@ -79,6 +79,10 @@ export const employerProfileSchema = z.object({
     .max(255, "Location must not exceed 255 characters")
     .optional()
     .or(z.literal("")),
+
+  avatarUrl: z.url("Please upload the image"),
+
+  bannerImageUrl: z.url("Please upload the image").optional().or(z.literal("")),
 });
 
 export type EmployerProfileData = z.infer<typeof employerProfileSchema>;

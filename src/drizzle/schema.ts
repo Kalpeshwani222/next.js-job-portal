@@ -24,7 +24,7 @@ export const users = pgTable("users", {
   email: varchar("email", { length: 255 }).notNull().unique(),
   password: text("password").notNull(),
   phone: varchar("phone", { length: 20 }),
-
+  avatarUrl: text("avatar_url"),
   role: userRoleEnum("role").notNull().default("applicant"),
 
   deletedAt: timestamp("deleted_at", {
@@ -70,7 +70,6 @@ export const employers = pgTable("employers", {
 
   name: varchar({ length: 255 }),
   description: text("description"),
-  avatarUrl: text("avatar_url"),
   bannerImageUrl: text("banner_image_url"),
   organizationType: varchar("organization_type", { length: 255 }),
   teamSize: varchar("team_size", { length: 50 }),

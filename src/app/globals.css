@@ -2,6 +2,13 @@
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
+/* uploadthings css */
+
+@import "uploadthing/tw/v4";
+@source "../../node_modules/@uploadthing/react/dist"; /** <-- depends on your project structure */
+
+/* end uploadthings */
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {

@@ -81,6 +81,7 @@ export const validateSessionAndGetUser = async (session: string) => {
         ip: sessions.ip,
       },
       name: users.name,
+      avatarUrl: users.avatarUrl,
       userName: users.username,
       role: users.role,
       phone: users.phone,

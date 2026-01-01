@@ -19,7 +19,7 @@ const SettingPage = async () => {
           websiteUrl: current_user.employerDetails.websiteUrl,
           yearOfEstablishment:
             current_user.employerDetails.yearOfEstablishment?.toString(),
-          avatarUrl: current_user.employerDetails.avatarUrl,
+          avatarUrl: current_user.avatarUrl,
           bannerImageUrl: current_user.employerDetails.bannerImageUrl,
         } as EmployerProfileData
       }
