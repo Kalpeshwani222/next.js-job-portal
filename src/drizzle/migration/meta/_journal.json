@@ -15,6 +15,13 @@
       "when": 1767205562185,
       "tag": "0001_fine_mac_gargan",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1767634107230,
+      "tag": "0002_dusty_spacker_dave",
+      "breakpoints": true
     }
   ]
 }

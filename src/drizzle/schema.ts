@@ -1,6 +1,15 @@
+import {
+  JOB_LEVEL,
+  JOB_TYPE,
+  MIN_EDUC,
+  SALARY_CURRENCY,
+  SALARY_PERIOD,
+  WORK_TYPE,
+} from "@/config/constants";
 import { relations } from "drizzle-orm";
 
 import {
+  boolean,
   date,
   integer,
   pgEnum,
@@ -111,16 +120,12 @@ export const applicants = pgTable("applicants", {
   id: integer("id")
     .primaryKey()
     .references(() => users.id, { onDelete: "cascade" }),
-
   biography: text("biography"),
   dateOfBirth: date("date_of_birth"),
   nationality: varchar("nationality", { length: 100 }),
-  // maritalStatus: maritalStatusEnum("marital_status"),
   maritalStatus: applicantMaritalStatusEnum("marital_status"),
-
   gender: genderEnum("gender"),
   education: educationEnum("education"),
-
   experience: text("experience"),
   websiteUrl: varchar("website_url", { length: 255 }),
   location: varchar("location", { length: 255 }),
@@ -128,19 +133,68 @@ export const applicants = pgTable("applicants", {
   deletedAt: timestamp("deleted_at", {
     withTimezone: true,
   }),
-
   createdAt: timestamp("created_at", {
     withTimezone: true,
   })
     .notNull()
     .defaultNow(),
-
   updatedAt: timestamp("updated_at", {
     withTimezone: true,
   })
     .notNull()
     .defaultNow(),
 });
+
+export const salaryCurrencyEnum = pgEnum("salary_currency", SALARY_CURRENCY);
+export const salaryPeriodEnum = pgEnum("salary_period", SALARY_PERIOD);
+export const jobTypeEnum = pgEnum("job_type", JOB_TYPE);
+export const workTypeEnum = pgEnum("work_type", WORK_TYPE);
+export const jobLevelEnum = pgEnum("job_level", JOB_LEVEL);
+export const minEducationEnum = pgEnum("min_education", MIN_EDUC);
+
+export const jobs = pgTable("jobs", {
+  id: serial("id").primaryKey(),
+  title: varchar("title", { length: 255 }).notNull(),
+  employerId: integer("employer_id")
+    .notNull()
+    .references(() => employers.id, { onDelete: "cascade" }),
+  description: text("description").notNull(),
+  tags: text("tags").array(),
+  minSalary: integer("min_salary"),
+  maxSalary: integer("max_salary"),
+  salaryCurrency: salaryCurrencyEnum("salary_currency"),
+  salaryPeriod: salaryPeriodEnum("salary_period"),
+  location: varchar("location", { length: 255 }),
+  jobType: jobTypeEnum("job_type"),
+  workType: workTypeEnum("work_type"),
+  jobLevel: jobLevelEnum("job_level"),
+  experience: text("experience"),
+  minEducation: minEducationEnum("min_education"),
+  isFeatured: boolean("is_featured").default(false).notNull(),
+  expiresAt: date("expires_at"),
+
+  deletedAt: timestamp("deleted_at", {
+    withTimezone: true,
+  }),
+  createdAt: timestamp("created_at", {
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", {
+    withTimezone: true,
+  })
+    .notNull()
+    .defaultNow(),
+});
+
+export const jobRelations = relations(jobs, ({ one }) => ({
+  //each job belongs to one emp
+  employers: one(employers, {
+    fields: [jobs.employerId],
+    references: [employers.id],
+  }),
+}));
 
 export const usersRelations = relations(users, ({ one, many }) => ({
   //one User can have One Employer Profile
