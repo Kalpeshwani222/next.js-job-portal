@@ -3,7 +3,7 @@ import { getCurrentEmployerDetails } from "@/features/employer/server/employers.
 import { EmployerProfileData } from "@/features/employer/employer.schema";
 import { redirect } from "next/navigation";
 
-const SettingPage = async () => {
+const SettingPage: React.FC = async () => {
   const current_user = await getCurrentEmployerDetails();
   if (!current_user) return redirect("/login");
 

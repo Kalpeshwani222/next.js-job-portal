@@ -7,7 +7,7 @@ import { eq } from "drizzle-orm";
 import { EmployerProfileData } from "../employer.schema";
 
 export const updateEmployerProfileAction = async (
-  data: EmployerProfileData
+  data: EmployerProfileData,
 ) => {
   try {
     const current_user = await getCurrentUser();
@@ -17,8 +17,6 @@ export const updateEmployerProfileAction = async (
         message: "Unauthorized",
       };
     }
-
-    console.log("data", data);
 
     const {
       description,
